@@ -4,8 +4,32 @@
 #include "color.h"
 #include "ray.h"
 
+// Formula: t^2 - 2*t*oc + oc^2 - radius^2 = 0
+// t = (-b + sqrt(b^2 - 4*a*c)) / (2*a)
+double hit_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto h = dot(oc, r.direction()); // h = b / -2
+    auto c = dot(oc, oc) - radius * radius;
+    auto discriminant = h * h - a * c;
+
+    if (discriminant < 0.0) {
+        return -1.0;
+    }
+
+    return (-h - std::sqrt(discriminant)) /  a;
+}
+
 color ray_color(const ray& r) {
-    return color(0,0,0);
+    auto t = hit_sphere(point3(0,0,-1), 0.5, r);
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - point3(0,0,-1));
+        return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+    }
+    auto unit_direction = unit_vector(r.direction());
+    auto a = 0.5 * (1.0 + unit_direction.y());
+
+    return color(0.5,0.7,1) * a + color(1,1,1) * (1 - a);
 }
 
 int main() {

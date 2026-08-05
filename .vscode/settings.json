@@ -9,6 +9,15 @@
     "files.associations": {
         "*.h": "cpp",
         "*.hpp": "cpp",
-        "*.cpp": "cpp"
+        "*.cpp": "cpp",
+        "iosfwd": "cpp",
+        "atomic": "cpp",
+        "charconv": "cpp",
+        "cstdlib": "cpp",
+        "system_error": "cpp",
+        "type_traits": "cpp",
+        "xlocale": "cpp",
+        "xutility": "cpp",
+        "cmath": "cpp"
     }
 }
