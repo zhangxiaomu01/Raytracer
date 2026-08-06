@@ -6,8 +6,8 @@
 
 // Formula: t^2 - 2*t*oc + oc^2 - radius^2 = 0
 // t = (-b + sqrt(b^2 - 4*a*c)) / (2*a)
-double hit_sphere(const point3& center, double radius, const Ray& r) {
-    vec3 oc = r.Origin() - center;
+double hit_sphere(const Point3& center, double radius, const Ray& r) {
+    Vec3 oc = r.Origin() - center;
     auto a = dot(r.Direction(), r.Direction());
     auto h = dot(oc, r.Direction()); // h = b / -2
     auto c = dot(oc, oc) - radius * radius;
@@ -21,9 +21,9 @@ double hit_sphere(const point3& center, double radius, const Ray& r) {
 }
 
 Color ray_color(const Ray& r) {
-    auto t = hit_sphere(point3(0,0,-1), 0.5, r);
+    auto t = hit_sphere(Point3(0,0,-1), 0.5, r);
     if (t > 0.0) {
-        vec3 N = unit_vector(r.At(t) - point3(0,0,-1));
+        Vec3 N = unit_vector(r.At(t) - Point3(0,0,-1));
         return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
     auto unit_direction = unit_vector(r.Direction());
@@ -44,14 +44,14 @@ int main() {
     auto focal_length = 1.0;
     auto viewport_height = 2.0;
     auto viewport_width = viewport_height * ((double) image_width / image_height);
-    vec3 camera_center(0, 0, 0);
+    Vec3 camera_center(0, 0, 0);
 
-    auto viewport_u = vec3(viewport_width, 0, 0);
-    auto viewport_v = vec3(0, -viewport_height, 0);
+    auto viewport_u = Vec3(viewport_width, 0, 0);
+    auto viewport_v = Vec3(0, -viewport_height, 0);
     // Calculate the horizontal and vertical delta vectors from pixel to pixel.
     auto pixel_delta_u = viewport_u / image_width;
     auto pixel_delta_v = viewport_v / image_height;
-    auto viewport_upper_left = camera_center - viewport_u / 2 - viewport_v / 2 - vec3(0, 0, focal_length);
+    auto viewport_upper_left = camera_center - viewport_u / 2 - viewport_v / 2 - Vec3(0, 0, focal_length);
     auto pixel00_loc = viewport_upper_left + pixel_delta_u * 0.5 + pixel_delta_v * 0.5;
 
     // Render

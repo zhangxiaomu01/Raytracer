@@ -4,9 +4,17 @@
 #include "Ray.h"
 
 struct HitRecord {
-    point3 point;
-    vec3 normal;
+    Point3 point;
+    Vec3 normal;
     double t;
+    bool m_frontFace;
+
+    // Normal should be unit vector.
+    void SetFaceNormal(const Ray& ray, const Vec3& outNormal) {
+
+        m_frontFace = dot(ray.Direction(), normal) < 0.0;
+        normal = m_frontFace ? outNormal : -outNormal;
+    }
 };
 
 class Hittable {
