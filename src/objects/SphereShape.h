@@ -8,7 +8,7 @@ class SphereShape : public Hittable {
 public:
     SphereShape(Point3 center, double radius) : m_center(center), m_radius(std::fmax(0,radius)) {}
 
-    bool Hit(const Ray& ray, double ray_tmin, double ray_tmax, HitRecord& hit_record) const override {
+    bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const override {
         Vec3 oc = ray.Origin() - m_center;
         auto a = ray.Direction().length_squared();
         auto h = dot(oc, ray.Direction()); // h = b / -2
@@ -22,9 +22,9 @@ public:
         auto sqrtd = std::sqrt(discriminant);
 
         auto t = (-h - sqrtd) / a;
-        if (t >= ray_tmax || t <= ray_tmin) {
+        if (!rayInterval.Surrounds(t)) {
             t = (-h + sqrtd) / a;
-            if (t >= ray_tmax || t <= ray_tmin) {
+            if (!rayInterval.Surrounds(t)) {
                 return false;
             }
         }

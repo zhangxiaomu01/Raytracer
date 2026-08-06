@@ -22,7 +22,7 @@ public:
     virtual ~Hittable() = default;
 
     // Check if the ray intersects the object.
-    virtual bool Hit(const Ray& ray, double ray_tmin, double ray_tmax, HitRecord& hit_record) const = 0;
+    virtual bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const = 0;
 };
 
 #endif

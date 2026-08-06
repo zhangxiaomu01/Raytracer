@@ -20,7 +20,7 @@ public:
         m_objects.emplace_back(object);
     }
 
-    bool Hit(const Ray& ray, double ray_tmin, double ray_tmax, HitRecord& hit_record) const override;
+    bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const override;
 
 private:
     std::vector<std::shared_ptr<Hittable>> m_objects;

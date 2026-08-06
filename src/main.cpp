@@ -4,7 +4,7 @@
 
 Color ray_color(const Ray& r, const HittableObjects& scene) {
     HitRecord record;
-    if (scene.Hit(r, 0.0, INFINITY, record)) {
+    if (scene.Hit(r, Interval(0.0, G_INFINITY), record)) {
         return 0.5 * Color(record.normal + Color(1,1,1));
     }
 

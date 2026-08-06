@@ -30,5 +30,6 @@ inline double RadiansToDegrees(double radians) {
 #include "Color.h"
 #include "Ray.h"
 #include "Vec3.h"
+#include "Interval.h"
 
 #endif

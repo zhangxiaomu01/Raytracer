@@ -61,6 +61,9 @@
         "xloctime": "cpp",
         "xmemory": "cpp",
         "xstring": "cpp",
-        "xtr1common": "cpp"
+        "xtr1common": "cpp",
+        "cerrno": "cpp",
+        "cfloat": "cpp",
+        "climits": "cpp"
     }
 }
