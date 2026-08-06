@@ -5,9 +5,9 @@
 
 #include <fstream>
 
-using color = vec3;
+using Color = vec3;
 
-void write_color(std::ofstream& out, const color& pixel_color) {
+void WriteColor(std::ofstream& out, const Color& pixel_color) {
     auto r = pixel_color.x();
     auto g = pixel_color.y();
     auto b = pixel_color.z();

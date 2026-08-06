@@ -1,15 +1,15 @@
 #include <fstream>
 #include <iostream>
 
-#include "color.h"
-#include "ray.h"
+#include "Color.h"
+#include "Ray.h"
 
 // Formula: t^2 - 2*t*oc + oc^2 - radius^2 = 0
 // t = (-b + sqrt(b^2 - 4*a*c)) / (2*a)
-double hit_sphere(const point3& center, double radius, const ray& r) {
-    vec3 oc = r.origin() - center;
-    auto a = dot(r.direction(), r.direction());
-    auto h = dot(oc, r.direction()); // h = b / -2
+double hit_sphere(const point3& center, double radius, const Ray& r) {
+    vec3 oc = r.Origin() - center;
+    auto a = dot(r.Direction(), r.Direction());
+    auto h = dot(oc, r.Direction()); // h = b / -2
     auto c = dot(oc, oc) - radius * radius;
     auto discriminant = h * h - a * c;
 
@@ -20,16 +20,16 @@ double hit_sphere(const point3& center, double radius, const ray& r) {
     return (-h - std::sqrt(discriminant)) /  a;
 }
 
-color ray_color(const ray& r) {
+Color ray_color(const Ray& r) {
     auto t = hit_sphere(point3(0,0,-1), 0.5, r);
     if (t > 0.0) {
-        vec3 N = unit_vector(r.at(t) - point3(0,0,-1));
-        return 0.5 * color(N.x() + 1, N.y() + 1, N.z() + 1);
+        vec3 N = unit_vector(r.At(t) - point3(0,0,-1));
+        return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
     }
-    auto unit_direction = unit_vector(r.direction());
+    auto unit_direction = unit_vector(r.Direction());
     auto a = 0.5 * (1.0 + unit_direction.y());
 
-    return color(0.5,0.7,1) * a + color(1,1,1) * (1 - a);
+    return Color(0.5,0.7,1) * a + Color(1,1,1) * (1 - a);
 }
 
 int main() {
@@ -69,11 +69,11 @@ int main() {
         for (int i = 0; i < image_width; i++) {
             auto pixel_center = pixel00_loc + pixel_delta_u * i + pixel_delta_v * j;
             auto ray_direction = pixel_center - camera_center;
-            ray r(camera_center, ray_direction);
+            Ray r(camera_center, ray_direction);
 
-            color pixel_color = ray_color(r);
+            Color pixel_color = ray_color(r);
 
-            write_color(out, pixel_color);
+            WriteColor(out, pixel_color);
         }
     }
 
