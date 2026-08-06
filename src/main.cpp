@@ -1,8 +1,4 @@
-#include <fstream>
-#include <iostream>
-
-#include "Color.h"
-#include "Ray.h"
+#include "CommonUtil.h"
 
 // Formula: t^2 - 2*t*oc + oc^2 - radius^2 = 0
 // t = (-b + sqrt(b^2 - 4*a*c)) / (2*a)

@@ -5,7 +5,6 @@
 #include <memory>
 
 #include "Hittable.h"
-#include "SphereShape.h"
 
 class HittableObjects : public Hittable {
 public:

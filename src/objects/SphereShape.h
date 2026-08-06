@@ -2,7 +2,7 @@
 #define SPHERE_SHAPE_H
 
 #include "Hittable.h"
-#include "vec3.h"
+#include "CommonUtil.h"
 
 class SphereShape : public Hittable {
 public:
