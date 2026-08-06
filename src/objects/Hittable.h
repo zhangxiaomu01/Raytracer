@@ -12,7 +12,7 @@ struct HitRecord {
     // Normal should be unit vector.
     void SetFaceNormal(const Ray& ray, const Vec3& outNormal) {
 
-        m_frontFace = dot(ray.Direction(), normal) < 0.0;
+        m_frontFace = dot(ray.Direction(), outNormal) < 0.0;
         normal = m_frontFace ? outNormal : -outNormal;
     }
 };

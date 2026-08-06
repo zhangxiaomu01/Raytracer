@@ -1,27 +1,13 @@
 #include "CommonUtil.h"
+#include "HittableObjects.h"
+#include "SphereShape.h"
 
-// Formula: t^2 - 2*t*oc + oc^2 - radius^2 = 0
-// t = (-b + sqrt(b^2 - 4*a*c)) / (2*a)
-double hit_sphere(const Point3& center, double radius, const Ray& r) {
-    Vec3 oc = r.Origin() - center;
-    auto a = dot(r.Direction(), r.Direction());
-    auto h = dot(oc, r.Direction()); // h = b / -2
-    auto c = dot(oc, oc) - radius * radius;
-    auto discriminant = h * h - a * c;
-
-    if (discriminant < 0.0) {
-        return -1.0;
+Color ray_color(const Ray& r, const HittableObjects& scene) {
+    HitRecord record;
+    if (scene.Hit(r, 0.0, INFINITY, record)) {
+        return 0.5 * Color(record.normal + Color(1,1,1));
     }
 
-    return (-h - std::sqrt(discriminant)) /  a;
-}
-
-Color ray_color(const Ray& r) {
-    auto t = hit_sphere(Point3(0,0,-1), 0.5, r);
-    if (t > 0.0) {
-        Vec3 N = unit_vector(r.At(t) - Point3(0,0,-1));
-        return 0.5 * Color(N.x() + 1, N.y() + 1, N.z() + 1);
-    }
     auto unit_direction = unit_vector(r.Direction());
     auto a = 0.5 * (1.0 + unit_direction.y());
 
@@ -50,6 +36,12 @@ int main() {
     auto viewport_upper_left = camera_center - viewport_u / 2 - viewport_v / 2 - Vec3(0, 0, focal_length);
     auto pixel00_loc = viewport_upper_left + pixel_delta_u * 0.5 + pixel_delta_v * 0.5;
 
+    // Scene
+    auto scene = std::make_shared<HittableObjects>();
+    // Add spheres to the scene
+    scene->AddObject(std::make_shared<SphereShape>(Point3(0,0,-1), 0.5));
+    scene->AddObject(std::make_shared<SphereShape>(Point3(0,-100.5, -1), 100));
+
     // Render
 
     std::ofstream out("image.ppm", std::ios::out | std::ios::binary);
@@ -67,7 +59,7 @@ int main() {
             auto ray_direction = pixel_center - camera_center;
             Ray r(camera_center, ray_direction);
 
-            Color pixel_color = ray_color(r);
+            Color pixel_color = ray_color(r, *scene);
 
             WriteColor(out, pixel_color);
         }
