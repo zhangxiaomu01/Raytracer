@@ -30,9 +30,11 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 include_directories(${CMAKE_SOURCE_DIR}/src)
 include_directories(${CMAKE_SOURCE_DIR}/src/objects)
 include_directories(${CMAKE_SOURCE_DIR}/src/math)
+include_directories(${CMAKE_SOURCE_DIR}/src/camera)
 include_directories(${CMAKE_SOURCE_DIR}/src/utility)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_SOURCE_DIR}/src/camera/*.cpp"
     "${CMAKE_SOURCE_DIR}/src/*.cpp"
     "${CMAKE_SOURCE_DIR}/src/objects/*.cpp"
     "${CMAKE_SOURCE_DIR}/src/math/*.cpp"
