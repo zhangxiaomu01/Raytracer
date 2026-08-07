@@ -9,9 +9,9 @@
 
 
 // Constants
-const double G_EPSILON = 1e-6;
-const double G_PI = 3.14159265358979323846;
-const double G_INFINITY = std::numeric_limits<double>::infinity();
+const inline double G_EPSILON = 1e-6;
+const inline double G_PI = 3.14159265358979323846;
+const inline double G_INFINITY = std::numeric_limits<double>::infinity();
 
 // Utility Functions
 inline double Clamp(double x, double min, double max) {
@@ -25,11 +25,5 @@ inline double DgreeToRadians(double degrees) {
 inline double RadiansToDegrees(double radians) {
     return radians * 180.0 / G_PI;
 }
-
-// Common includes
-#include "Color.h"
-#include "Ray.h"
-#include "Vec3.h"
-#include "Interval.h"
 
 #endif

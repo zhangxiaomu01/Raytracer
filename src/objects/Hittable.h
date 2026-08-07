@@ -1,7 +1,8 @@
 #ifndef HITTABLE_H
 #define HITTABLE_H
 
-#include "CommonUtil.h"
+#include "Ray.h"
+#include "Interval.h"
 
 struct HitRecord {
     Point3 point;

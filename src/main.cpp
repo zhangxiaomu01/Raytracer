@@ -1,4 +1,6 @@
-#include "CommonUtil.h"
+#include "Color.h"
+#include "Ray.h"
+#include "Interval.h"
 #include "HittableObjects.h"
 #include "SphereShape.h"
 
