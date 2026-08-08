@@ -18,6 +18,10 @@ private:
 
     Color RayColor(const Ray& r, const HittableObjects& scene);
 
+    Ray GetRay(int x, int y);
+
+    Vec3 SampleSquare() const;
+
     float mAspectRatio;
     int mImageWidth;
     int mImageHeight;
@@ -33,6 +37,11 @@ private:
     Point3 mPixel00Loc;
     Vec3 mPixelDeltaU;
     Vec3 mPixelDeltaV;
+
+    // Samples
+    int mSamplesPerPixel;
+    double mSampleRates;
+
 };
 
 #endif

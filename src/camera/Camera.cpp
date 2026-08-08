@@ -1,5 +1,7 @@
 #include "Camera.h"
 
+#include "CommonUtil.h"
+
 Camera::Camera() {
     // Initialize the camera
     Initialize();
@@ -27,6 +29,10 @@ void Camera::Initialize() {
     mPixelDeltaU = viewportU / mImageWidth;
     mPixelDeltaV = viewportV / mImageHeight;
     mPixel00Loc = mViewportUpperLeft + 0.5 * (mPixelDeltaU + mPixelDeltaV);
+
+    // Initialize the samples
+    mSamplesPerPixel = 50;
+    mSampleRates = 1.0 / mSamplesPerPixel;
 }
 
 Color Camera::RayColor(const Ray& r, const HittableObjects& scene) {
@@ -40,6 +46,23 @@ Color Camera::RayColor(const Ray& r, const HittableObjects& scene) {
     auto a = 0.5 * (1.0 + unit_direction.y());
 
     return Color(0.5,0.7,1) * a + Color(1,1,1) * (1 - a);
+}
+
+Ray Camera::GetRay(int x, int y) {
+
+    Vec3 offset = SampleSquare();
+    // Get the pixel center
+    auto pixelCenter = mPixel00Loc 
+        + mPixelDeltaU * (x + offset.x()) + mPixelDeltaV * (y + offset.y());
+    auto rayDirection = pixelCenter - mCameraCenter;
+    auto rayOrigin = mCameraCenter;
+
+    return Ray(rayOrigin, rayDirection);
+}
+
+Vec3 Camera::SampleSquare() const {
+    // Sample a point in the square
+    return Vec3(RandomDouble() - 0.5, RandomDouble() * 0.5 - 0.5, 0);
 }
 
 void Camera::Render(const HittableObjects& scene) {
@@ -57,12 +80,17 @@ void Camera::Render(const HittableObjects& scene) {
      for (int j = 0; j < mImageHeight; j++) {
         std::cout << "\rScanlines remaining: " << (mImageHeight - j) << ' ' << std::flush;
         for (int i = 0; i < mImageWidth; i++) {
-            auto pixel_center = mPixel00Loc + mPixelDeltaU * i + mPixelDeltaV * j;
-            auto ray_direction = pixel_center - mCameraCenter;
-            Ray r(mCameraCenter, ray_direction);
+            // auto pixel_center = mPixel00Loc + mPixelDeltaU * i + mPixelDeltaV * j;
+            // auto ray_direction = pixel_center - mCameraCenter;
+            // Ray r(mCameraCenter, ray_direction);
+            Color pixel_color = Color(0,0,0);
+            for (int s = 0; s < mSamplesPerPixel; s++) {
+                auto r = GetRay(i, j);
+                pixel_color += RayColor(r, scene);
+            }
 
-            Color pixel_color = RayColor(r, scene);
-
+            pixel_color *= mSampleRates;
+            
             WriteColor(out, pixel_color);
         }
     }

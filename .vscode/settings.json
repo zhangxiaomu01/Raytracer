@@ -64,6 +64,7 @@
         "xtr1common": "cpp",
         "cerrno": "cpp",
         "cfloat": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "random": "cpp"
     }
 }

@@ -27,6 +27,15 @@ public:
         return m_min < x && x < m_max;
     }
 
+    double Clamp(double x) const {
+        if (x < m_min) {
+            return m_min;
+        } else if (x > m_max) {
+            return m_max;
+        }
+        return x;
+    }
+
     static const Interval empty, universe;
 
 };

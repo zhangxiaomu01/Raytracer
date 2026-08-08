@@ -6,6 +6,7 @@
 #include <cmath>
 #include <iostream>
 #include <fstream>
+#include <random>
 
 
 // Constants
@@ -24,6 +25,17 @@ inline double DgreeToRadians(double degrees) {
 
 inline double RadiansToDegrees(double radians) {
     return radians * 180.0 / G_PI;
+}
+
+// Generate a random double in the range [0, 1) uniformly
+inline double RandomDouble() {
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::mt19937 generator;
+    return distribution(generator);
+}
+
+inline double RandomDouble(double minVal, double maxVal) {
+    return minVal + RandomDouble() * (maxVal - minVal);
 }
 
 #endif

@@ -18,3 +18,4 @@ int main() {
     camera.Render(*scene);
     return 0;
 }
+
