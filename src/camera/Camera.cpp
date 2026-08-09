@@ -45,14 +45,14 @@ Color Camera::RayColor(const Ray& r, const HittableObjects& scene, int depth) {
     HitRecord record;
     // 0.00001 is the minimum distance to avoid shadow acne
     if (scene.Hit(r, Interval(0.00001, G_INFINITY), record)) {
-        Vec3 outDir = record.normal + Vec3::RandomUnitVector();
-        if (outDir.length_squared() < 0.0001) { // Avoid reflection to the same direction
-            outDir = record.normal;
-        }
-        outDir = unit_vector(outDir);
-        Ray outRay = Ray(record.point, outDir);
+        Color attentunation = Color(0,0,0);
+        Ray outRay;
 
-        return 0.5 * RayColor(outRay, scene, depth - 1);
+        if (record.m_material->Scatter(r, record, attentunation, outRay)) {
+            return attentunation * RayColor(outRay, scene, depth - 1);
+        }
+
+        return attentunation;
     }
 
     auto unit_direction = unit_vector(r.Direction());

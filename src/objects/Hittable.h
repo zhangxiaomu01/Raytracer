@@ -3,12 +3,16 @@
 
 #include "Ray.h"
 #include "Interval.h"
+#include "Material.h"
+
+class Material;
 
 struct HitRecord {
     Point3 point;
     Vec3 normal;
     double t;
     bool m_frontFace;
+    std::shared_ptr<Material> m_material;
 
     // Normal should be unit vector.
     void SetFaceNormal(const Ray& ray, const Vec3& outNormal) {

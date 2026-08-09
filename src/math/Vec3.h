@@ -44,6 +44,11 @@ class Vec3 {
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
 
+    bool NearZero() const {
+        const double epsilon = 1e-6;
+        return e[0] < epsilon && e[1] < epsilon && e[2] < epsilon;
+    }
+
     static Vec3 RandomVec3() {
         return Vec3(RandomDouble(), RandomDouble(), RandomDouble());
     }
