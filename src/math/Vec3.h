@@ -67,6 +67,17 @@ class Vec3 {
             }
         }
     }
+
+    // 2D Disk Sample
+    static Vec3 RandomInUnitDisk() {
+        while (true) {
+            Vec3 p = Vec3(RandomDouble(-1.0, 1.0), RandomDouble(-1.0, 1.0), 0.0);
+            double length_squared = p.length_squared();
+            if (length_squared >= 0.001 && length_squared <= 1.0) {
+                return p;
+            }
+        }
+    }
 };
 
 // point3 is just an alias for vec3, but useful for geometric clarity in the code.

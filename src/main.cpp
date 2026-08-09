@@ -14,6 +14,8 @@ int main() {
     camera.mLookFrom = Point3(-2,2,1);
     camera.mLookAt = Point3(0,0,-1);
     camera.mVUp = Point3(0,1,0);
+    camera.mDefocusAngle = 10.0;
+    camera.mFocalDistance = 3.4;
 
     // Scene
     auto scene = std::make_shared<HittableObjects>();

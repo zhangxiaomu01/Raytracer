@@ -21,17 +21,17 @@ void Camera::Initialize() {
     v = cross(w, u);
 
        // Initialize the viewport parameters
-    mFocalLength = (mLookAt - mLookFrom).length();
+    // mFocalLength = (mLookAt - mLookFrom).length();
     auto theta = DgreeToRadians(mFOV);
     auto h = std::tan(theta / 2.0);
-    mViewportHeight = 2 * h * mFocalLength;
+    mViewportHeight = 2 * h * mFocalDistance;
     mViewportWidth = mViewportHeight * ((double) mImageWidth / mImageHeight);
 
     // Initialize the viewport
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
     auto viewportU = mViewportWidth * u;
     auto viewportV = mViewportHeight * -v;
-    mViewportUpperLeft = mCameraCenter - viewportU / 2 - viewportV / 2 - w * mFocalLength;
+    mViewportUpperLeft = mCameraCenter - viewportU / 2 - viewportV / 2 - w * mFocalDistance;
     
     mPixelDeltaU = viewportU / mImageWidth;
     mPixelDeltaV = viewportV / mImageHeight;
@@ -41,6 +41,11 @@ void Camera::Initialize() {
     mSamplesPerPixel = 50;
     mSampleRates = 1.0 / mSamplesPerPixel;
     mMaxDepth = 50;
+
+    // Defocus radius
+    auto defocusRadius = mFocalDistance * std::tan(DgreeToRadians(mDefocusAngle / 2.0));
+    mDefocusDiskU = defocusRadius * u;
+    mDefocusDiskV = defocusRadius * v;
 }
 
 Color Camera::RayColor(const Ray& r, const HittableObjects& scene, int depth) {
@@ -70,12 +75,13 @@ Color Camera::RayColor(const Ray& r, const HittableObjects& scene, int depth) {
 
 Ray Camera::GetRay(int x, int y) {
 
-    Vec3 offset = SampleSquare();
+    Vec3 offset = SampleSquare(); // Sample in pixel square uniformly
     // Get the pixel center
     auto pixelCenter = mPixel00Loc 
         + mPixelDeltaU * (x + offset.x()) + mPixelDeltaV * (y + offset.y());
-    auto rayDirection = pixelCenter - mCameraCenter;
-    auto rayOrigin = mCameraCenter;
+
+    auto rayOrigin = mDefocusAngle < G_EPSILON ? mCameraCenter : SampleDefocusDisk();
+    auto rayDirection = pixelCenter - rayOrigin;
 
     return Ray(rayOrigin, rayDirection);
 }
@@ -93,6 +99,12 @@ Ray Camera::GetOutRay(const Vec3& point, const Vec3& normal) {
 Vec3 Camera::SampleSquare() const {
     // Sample a point in the square
     return Vec3(RandomDouble() - 0.5, RandomDouble() * 0.5 - 0.5, 0);
+}
+
+Vec3 Camera::SampleDefocusDisk() const {
+    // Sample a point in the disk
+    auto p = Vec3::RandomInUnitDisk();
+    return mCameraCenter + p.x() * mDefocusDiskU  + p.y() * mDefocusDiskV;
 }
 
 void Camera::Render(const HittableObjects& scene) {

@@ -13,6 +13,9 @@ public:
     Point3 mLookAt = Vec3(0,0,-1);
     Vec3 mVUp = Vec3(0,1,0);
 
+    double mDefocusAngle = 0.0; // in degrees, 0 means no depth of field
+    double mFocalDistance = 10.0;
+
     Camera();
     ~Camera() = default;
 
@@ -29,16 +32,18 @@ private:
 
     Vec3 SampleSquare() const;
 
+    Vec3 SampleDefocusDisk() const;
+
     float mAspectRatio;
     int mImageWidth;
     int mImageHeight;
 
     // Camera parameters
-    double mFocalLength;
     double mViewportHeight;
     double mViewportWidth;
     Vec3 mCameraCenter;
     Vec3 u, v, w;
+    Vec3 mDefocusDiskU, mDefocusDiskV;
 
     // Viewport parameters
     Point3 mViewportUpperLeft;
