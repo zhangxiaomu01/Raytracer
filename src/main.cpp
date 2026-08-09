@@ -15,8 +15,8 @@ int main() {
     auto scene = std::make_shared<HittableObjects>();
     auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
     auto material_center = std::make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
-    auto material_left   = std::make_shared<MetalMat>(Color(0.8, 0.8, 0.8));
-    auto material_right  = std::make_shared<MetalMat>(Color(0.8, 0.6, 0.2));
+    auto material_left   = std::make_shared<MetalMat>(Color(0.8, 0.8, 0.8), 0.0);
+    auto material_right  = std::make_shared<MetalMat>(Color(0.8, 0.6, 0.2), 0.3);
 
     scene->AddObject(std::make_shared<SphereShape>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
     scene->AddObject(std::make_shared<SphereShape>(Point3( 0.0,    0.0, -1.2),   0.5, material_center));
