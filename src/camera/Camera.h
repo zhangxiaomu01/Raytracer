@@ -16,9 +16,11 @@ public:
 private:
     void Initialize();
 
-    Color RayColor(const Ray& r, const HittableObjects& scene);
+    Color RayColor(const Ray& r, const HittableObjects& scene, int depth);
 
     Ray GetRay(int x, int y);
+
+    Ray GetOutRay(const Vec3& point, const Vec3& normal);
 
     Vec3 SampleSquare() const;
 
@@ -41,6 +43,7 @@ private:
     // Samples
     int mSamplesPerPixel;
     double mSampleRates;
+    int mMaxDepth;
 
 };
 

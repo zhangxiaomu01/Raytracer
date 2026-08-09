@@ -43,6 +43,25 @@ class Vec3 {
     double length_squared() const {
         return e[0]*e[0] + e[1]*e[1] + e[2]*e[2];
     }
+
+    static Vec3 RandomVec3() {
+        return Vec3(RandomDouble(), RandomDouble(), RandomDouble());
+    }
+
+    static Vec3 RandomVec3(double minVal, double maxVal) {
+        return Vec3(RandomDouble(minVal, maxVal), RandomDouble(minVal, maxVal), RandomDouble(minVal, maxVal));
+    }
+
+    static Vec3 RandomUnitVector() {
+        while (true) {
+            Vec3 p = Vec3::RandomVec3(-1.0, 1.0);
+            double length_squared = p.length_squared();
+            if (length_squared >= 0.001 && length_squared <= 1.0) {
+                p /= std::sqrt(length_squared);
+                return p;
+            }
+        }
+    }
 };
 
 // point3 is just an alias for vec3, but useful for geometric clarity in the code.

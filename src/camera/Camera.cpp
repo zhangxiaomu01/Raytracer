@@ -33,13 +33,20 @@ void Camera::Initialize() {
     // Initialize the samples
     mSamplesPerPixel = 50;
     mSampleRates = 1.0 / mSamplesPerPixel;
+    mMaxDepth = 50;
 }
 
-Color Camera::RayColor(const Ray& r, const HittableObjects& scene) {
+Color Camera::RayColor(const Ray& r, const HittableObjects& scene, int depth) {
+    if (depth <= 0) { // Max depth
+        return Color(0,0,0);
+    }
+
     // Get the color of the pixel
     HitRecord record;
     if (scene.Hit(r, Interval(0.0, G_INFINITY), record)) {
-        return 0.5 * Color(record.normal + Color(1,1,1));
+        Ray outRay = GetOutRay(record.point, record.normal);
+
+        return 0.5 * RayColor(outRay, scene, depth - 1);
     }
 
     auto unit_direction = unit_vector(r.Direction());
@@ -58,6 +65,16 @@ Ray Camera::GetRay(int x, int y) {
     auto rayOrigin = mCameraCenter;
 
     return Ray(rayOrigin, rayDirection);
+}
+
+Ray Camera::GetOutRay(const Vec3& point, const Vec3& normal) {
+    // 1. Sample uniformly in the hemisphere above the normal vector
+    Vec3 randomUnitVector = Vec3::RandomUnitVector();
+    if (dot(randomUnitVector, normal) > 0.0) {
+        return Ray(point, randomUnitVector);
+    } else {
+        return Ray(point, -randomUnitVector);
+    }
 }
 
 Vec3 Camera::SampleSquare() const {
@@ -86,7 +103,7 @@ void Camera::Render(const HittableObjects& scene) {
             Color pixel_color = Color(0,0,0);
             for (int s = 0; s < mSamplesPerPixel; s++) {
                 auto r = GetRay(i, j);
-                pixel_color += RayColor(r, scene);
+                pixel_color += RayColor(r, scene, mMaxDepth);
             }
 
             pixel_color *= mSampleRates;
