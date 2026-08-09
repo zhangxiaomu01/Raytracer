@@ -119,4 +119,11 @@ inline Vec3 unit_vector(const Vec3& v) {
     return v / v.length();
 }
 
+// v is the incoming vector
+// n is the normal vector
+// return vector is the reflected vector
+inline Vec3 reflect(const Vec3& v, const Vec3& n) {
+    return v - 2.0 * dot(v, n) * n;
+}
+
 #endif
