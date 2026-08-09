@@ -13,18 +13,25 @@ void Camera::Initialize() {
     mImageWidth = 400;
     mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
     mImageHeight = mImageHeight < 1 ? 1 : mImageHeight;
+    mCameraCenter = mLookFrom;
+    mLookAt = Point3(0,0,-1);
+    mVUp = Vec3(0,1,0);
+    w = unit_vector(mLookFrom - mLookAt); // w points to the negative direction of camera view
+    u = unit_vector(cross(mVUp, w));
+    v = cross(w, u);
 
-    // Initialize the viewport parameters
-    mFocalLength = 1.0;
-    mViewportHeight = 2.0;
+       // Initialize the viewport parameters
+    mFocalLength = (mLookAt - mLookFrom).length();
+    auto theta = DgreeToRadians(mFOV);
+    auto h = std::tan(theta / 2.0);
+    mViewportHeight = 2 * h * mFocalLength;
     mViewportWidth = mViewportHeight * ((double) mImageWidth / mImageHeight);
-    mCameraCenter = Point3(0,0,0);
 
     // Initialize the viewport
     // Calculate the vectors across the horizontal and down the vertical viewport edges.
-    auto viewportU = Vec3(mViewportWidth, 0, 0);
-    auto viewportV = Vec3(0, -mViewportHeight, 0);
-    mViewportUpperLeft = mCameraCenter - viewportU / 2 - viewportV / 2 - Vec3(0, 0, mFocalLength);
+    auto viewportU = mViewportWidth * u;
+    auto viewportV = mViewportHeight * -v;
+    mViewportUpperLeft = mCameraCenter - viewportU / 2 - viewportV / 2 - w * mFocalLength;
     
     mPixelDeltaU = viewportU / mImageWidth;
     mPixelDeltaV = viewportV / mImageHeight;

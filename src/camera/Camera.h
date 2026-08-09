@@ -8,6 +8,11 @@
 class Camera
 {
 public:
+    double mFOV = 90.0;
+    Point3 mLookFrom = Vec3(0,0,0);
+    Point3 mLookAt = Vec3(0,0,-1);
+    Vec3 mVUp = Vec3(0,1,0);
+
     Camera();
     ~Camera() = default;
 
@@ -33,6 +38,7 @@ private:
     double mViewportHeight;
     double mViewportWidth;
     Vec3 mCameraCenter;
+    Vec3 u, v, w;
 
     // Viewport parameters
     Point3 mViewportUpperLeft;
