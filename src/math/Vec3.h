@@ -137,4 +137,17 @@ inline Vec3 reflect(const Vec3& v, const Vec3& n) {
     return v - 2.0 * dot(v, n) * n;
 }
 
+// uv is the incoming vector
+// n is the normal vector
+// etai_over_etat is the ratio of the refraction index of the two media
+// return vector is the refracted vector
+inline Vec3 refract(const Vec3& uv, const Vec3& n, double etai_over_etat) {
+    double cos_theta = std::fmin(dot(-uv, n), 1.0);
+    double sin_theta = std::sqrt(1.0 - cos_theta * cos_theta);
+    Vec3 outRayPerp = (uv + n * cos_theta) * etai_over_etat;
+    Vec3 outRayParallel = - n * std::sqrt(std::fabs(1.0 - outRayPerp.length_squared()));
+
+    return unit_vector(outRayParallel + outRayPerp);
+}
+
 #endif
