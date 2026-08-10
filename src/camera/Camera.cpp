@@ -10,7 +10,7 @@ Camera::Camera() {
 void Camera::Initialize() {
     // Initialize the camera parameters
     mAspectRatio = 16 / 9.0;
-    mImageWidth = 400;
+    mImageWidth = 1200;
     mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
     mImageHeight = mImageHeight < 1 ? 1 : mImageHeight;
     mCameraCenter = mLookFrom;

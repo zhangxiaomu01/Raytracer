@@ -9,31 +9,60 @@
 #include "Camera.h"
 
 int main() {
+    HittableObjects scene;
+
     // Camera
+    auto ground_material = std::make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
+    scene.AddObject(std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, ground_material));
+
+    for (int a = -11; a < 11; a++) {
+        for (int b = -11; b < 11; b++) {
+            auto choose_mat = RandomDouble();
+            Point3 center(a + 0.9*RandomDouble(), 0.2, b + 0.9*RandomDouble());
+
+            if ((center - Point3(4, 0.2, 0)).length() > 0.9) {
+                std::shared_ptr<Material> sphere_material;
+
+                if (choose_mat < 0.8) {
+                    // diffuse
+                    auto albedo = Color::RandomVec3() * Color::RandomVec3();
+                    sphere_material = std::make_shared<Lambertian>(albedo);
+                    scene.AddObject(std::make_shared<SphereShape>(center, 0.2, sphere_material));
+                } else if (choose_mat < 0.95) {
+                    // metal
+                    auto albedo = Color::RandomVec3(0.5, 1);
+                    auto fuzz = RandomDouble(0, 0.5);
+                    sphere_material = std::make_shared<MetalMat>(albedo, fuzz);
+                    scene.AddObject(std::make_shared<SphereShape>(center, 0.2, sphere_material));
+                } else {
+                    // glass
+                    sphere_material = std::make_shared<DielectricMat>(1.5);
+                    scene.AddObject(std::make_shared<SphereShape>(center, 0.2, sphere_material));
+                }
+            }
+        }
+    }
+
+    auto material1 = std::make_shared<DielectricMat>(1.5);
+    scene.AddObject(std::make_shared<SphereShape>(Point3(0, 1, 0), 1.0, material1));
+
+    auto material2 = std::make_shared<Lambertian>(Color(0.4, 0.2, 0.1));
+    scene.AddObject(std::make_shared<SphereShape>(Point3(-4, 1, 0), 1.0, material2));
+
+    auto material3 = std::make_shared<MetalMat>(Color(0.7, 0.6, 0.5), 0.0);
+    scene.AddObject(std::make_shared<SphereShape>(Point3(4, 1, 0), 1.0, material3));
+
     Camera camera;
-    camera.mFOV = 20;
-    camera.mLookFrom = Point3(-2,2,1);
-    camera.mLookAt = Point3(0,0,-1);
-    camera.mVUp = Point3(0,1,0);
-    camera.mDefocusAngle = 0.0;
-    camera.mFocalDistance = 3.4;
+    camera.mFOV     = 20;
+    camera.mLookFrom = Point3(13,2,3);
+    camera.mLookAt   = Point3(0,0,0);
+    camera.mVUp      = Vec3(0,1,0);
 
-    // Scene
-    auto scene = std::make_shared<HittableObjects>();
-    auto material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
-    auto material_center = std::make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
-    auto material_left   = std::make_shared<DielectricMat>(1.50);
-    auto material_bubble = std::make_shared<DielectricMat>(1.00 / 1.50);
-    auto material_right  = std::make_shared<MetalMat>(Color(0.8, 0.6, 0.2), 0.3);
-
-    scene->AddObject(std::make_shared<SphereShape>(Point3( 0.0, -100.5, -1.0), 100.0, material_ground));
-    scene->AddObject(std::make_shared<SphereShape>(Point3( 0.0,    0.0, -1.2),   0.5, material_center));
-    scene->AddObject(std::make_shared<SphereShape>(Point3(-1.0,    0.0, -1.0),   0.5, material_left));
-    scene->AddObject(std::make_shared<SphereShape>(Point3(-1.0,    0.0, -1.0),   0.4, material_bubble));
-    scene->AddObject(std::make_shared<SphereShape>(Point3( 1.0,    0.0, -1.0),   0.5, material_right));
+    camera.mDefocusAngle = 0.6;
+    camera.mFocalDistance    = 10.0;
 
     // Render
-    camera.Render(*scene);
+    camera.Render(scene);
     return 0;
 }
 
