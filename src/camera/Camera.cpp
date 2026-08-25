@@ -10,7 +10,7 @@ Camera::Camera() {
 void Camera::Initialize() {
     // Initialize the camera parameters
     mAspectRatio = 16 / 9.0;
-    mImageWidth = 1200;
+    mImageWidth = 400;
     mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
     mImageHeight = mImageHeight < 1 ? 1 : mImageHeight;
     mCameraCenter = mLookFrom;
@@ -38,9 +38,9 @@ void Camera::Initialize() {
     mPixel00Loc = mViewportUpperLeft + 0.5 * (mPixelDeltaU + mPixelDeltaV);
 
     // Initialize the samples
-    mSamplesPerPixel = 50;
+    mSamplesPerPixel = 10;
     mSampleRates = 1.0 / mSamplesPerPixel;
-    mMaxDepth = 50;
+    mMaxDepth = 20;
 
     // Defocus radius
     auto defocusRadius = mFocalDistance * std::tan(DgreeToRadians(mDefocusAngle / 2.0));
