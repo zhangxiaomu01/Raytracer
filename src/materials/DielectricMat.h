@@ -23,7 +23,7 @@ public:
             scattered = Ray(record.point, reflectedDirection);
         } else {
             Vec3 refractionDirection = refract(unitDir, record.normal, ri);
-            scattered = Ray(record.point, refractionDirection);
+            scattered = Ray(record.point, refractionDirection, r_in.Time());
         }
         attenuation = Color(1.0, 1.0, 1.0);
         return true;

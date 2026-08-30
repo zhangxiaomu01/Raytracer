@@ -27,7 +27,8 @@ int main() {
                     // diffuse
                     auto albedo = Color::RandomVec3() * Color::RandomVec3();
                     sphere_material = std::make_shared<Lambertian>(albedo);
-                    scene.AddObject(std::make_shared<SphereShape>(center, 0.2, sphere_material));
+                    Vec3 center2 = center + Vec3(0.0, RandomDouble(0.0 , 0.5), 0.0);
+                    scene.AddObject(std::make_shared<SphereShape>(center, center2, 0.2, sphere_material));
                 } else if (choose_mat < 0.95) {
                     // metal
                     auto albedo = Color::RandomVec3(0.5, 1);

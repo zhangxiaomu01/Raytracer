@@ -14,7 +14,7 @@ public:
             outDir = record.normal;
         }
         outDir = unit_vector(outDir);
-        scattered = Ray(record.point, outDir);
+        scattered = Ray(record.point, outDir, r_in.Time());
         return true;
     }
     

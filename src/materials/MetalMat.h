@@ -16,7 +16,7 @@ public:
             return false;
         }
         attenuation = mAlbedo;
-        scattered = Ray(record.point, reflected);
+        scattered = Ray(record.point, reflected, r_in.Time());
         return true;
     }
 

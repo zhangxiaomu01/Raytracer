@@ -83,7 +83,9 @@ Ray Camera::GetRay(int x, int y) {
     auto rayOrigin = mDefocusAngle < G_EPSILON ? mCameraCenter : SampleDefocusDisk();
     auto rayDirection = pixelCenter - rayOrigin;
 
-    return Ray(rayOrigin, rayDirection);
+    // Ray time
+    auto rayTime = RandomDouble();
+    return Ray(rayOrigin, rayDirection, rayTime);
 }
 
 Ray Camera::GetOutRay(const Vec3& point, const Vec3& normal) {
