@@ -18,12 +18,18 @@ public:
 
     inline void AddObject(std::shared_ptr<Hittable> object) {
         m_objects.emplace_back(object);
+        m_boundingBox = AABB(m_boundingBox, object->BoundingBox());
+    }
+
+    AABB BoundingBox() const override {
+        return m_boundingBox;
     }
 
     bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const override;
 
 private:
     std::vector<std::shared_ptr<Hittable>> m_objects;
+    AABB m_boundingBox;
 
 };
 

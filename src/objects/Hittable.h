@@ -4,6 +4,7 @@
 #include "Ray.h"
 #include "Interval.h"
 #include "Material.h"
+#include "AABB.h"
 
 class Material;
 
@@ -28,6 +29,8 @@ public:
 
     // Check if the ray intersects the object.
     virtual bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const = 0;
+
+    virtual AABB BoundingBox() const = 0;
 };
 
 #endif

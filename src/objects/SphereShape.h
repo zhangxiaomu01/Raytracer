@@ -8,11 +8,22 @@
 class SphereShape : public Hittable {
 public:
     // Stationary sphere
-    SphereShape(const Point3& staticCenter, double radius, std::shared_ptr<Material> material) : m_center(staticCenter, Vec3(0, 0, 0)), m_radius(std::fmax(0,radius)), m_material(material) {}
+    SphereShape(const Point3& staticCenter, double radius, std::shared_ptr<Material> material) : m_center(staticCenter, Vec3(0, 0, 0)), m_radius(std::fmax(0,radius)), m_material(material) {
+        auto rvec = Vec3(radius, radius, radius);
+        m_boundingBox = AABB(staticCenter - rvec, staticCenter + rvec);
+    }
 
     // Moving sphere
-    SphereShape(const Point3& center1, const Point3& center2, double radius, std::shared_ptr<Material> material) : m_center(center1, center2 - center1), m_radius(std::fmax(0,radius)), m_material(material) {}
+    SphereShape(const Point3& center1, const Point3& center2, double radius, std::shared_ptr<Material> material) : m_center(center1, center2 - center1), m_radius(std::fmax(0,radius)), m_material(material) {
+        auto rvec = Vec3(radius, radius, radius);
+        AABB box0 = AABB(m_center.At(0) - rvec, m_center.At(0) + rvec);
+        AABB box1 = AABB(m_center.At(1) - rvec, m_center.At(1) + rvec);
+        m_boundingBox = AABB(box0, box1);
+    }
 
+    AABB BoundingBox() const override {
+        return m_boundingBox;
+    }
 
     bool Hit(const Ray& ray, Interval rayInterval, HitRecord& hit_record) const override {
         Vec3 currentCenter = m_center.At(ray.Time());
@@ -48,6 +59,8 @@ private:
     Ray m_center;
     double m_radius;
     std::shared_ptr<Material> m_material;
+
+    AABB m_boundingBox;
 };
 
 

@@ -11,6 +11,11 @@ public:
     Interval() : m_min(G_INFINITY / 2), m_max(-G_INFINITY / 2) {}
     Interval(double min, double max) : m_min(min), m_max(max) {}
 
+    Interval(const Interval& a, const Interval& b) {
+        m_min = std::fmin(a.m_min, b.m_min);
+        m_max = std::fmax(a.m_max, b.m_max);
+    }
+
     double Size() const {
         return m_max - m_min;
     }
@@ -34,6 +39,11 @@ public:
             return m_max;
         }
         return x;
+    }
+
+    Interval Expand(double amount) const {
+        double delta = amount / 2.0;
+        return Interval(m_min - delta, m_max + delta);
     }
 
     static const Interval empty, universe;
