@@ -21,6 +21,10 @@ public:
         m_boundingBox = AABB(m_boundingBox, object->BoundingBox());
     }
 
+    std::vector<std::shared_ptr<Hittable>>& GetObjects() {
+        return m_objects;
+    }
+
     AABB BoundingBox() const override {
         return m_boundingBox;
     }

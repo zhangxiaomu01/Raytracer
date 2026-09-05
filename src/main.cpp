@@ -1,5 +1,6 @@
 #include "Color.h"
 #include "Ray.h"
+#include "BVH.h"
 #include "Interval.h"
 #include "HittableObjects.h"
 #include "SphereShape.h"
@@ -52,6 +53,8 @@ int main() {
 
     auto material3 = std::make_shared<MetalMat>(Color(0.7, 0.6, 0.5), 0.0);
     scene.AddObject(std::make_shared<SphereShape>(Point3(4, 1, 0), 1.0, material3));
+
+    scene = HittableObjects(std::make_shared<BVHNode>(scene));
 
     Camera camera;
     camera.mFOV     = 20;

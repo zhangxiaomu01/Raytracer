@@ -38,4 +38,7 @@ inline double RandomDouble(double minVal, double maxVal) {
     return minVal + RandomDouble() * (maxVal - minVal);
 }
 
+inline int RandomInt(int min, int max) {
+    return static_cast<int>(RandomDouble(min, max + 1));
+}
 #endif
