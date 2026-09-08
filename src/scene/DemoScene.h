@@ -9,6 +9,8 @@ public:
 
 private:
     static void BoundingSphereScene();
+
+    static void CheckeredSpheresScene();
     
 };
 #endif

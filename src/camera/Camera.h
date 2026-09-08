@@ -21,6 +21,16 @@ public:
 
     void Render(const HittableObjects& scene);
 
+    void SetAspectRatio(float aspectRatio);
+
+    void SetImageWidth(int imageWidth);
+
+    void SetSamplesPerPixel(int samplesPerPixel);
+
+    void SetMaxDepth(int maxDepth);
+
+    void SetFOV(double fov);
+
 private:
     void Initialize();
 

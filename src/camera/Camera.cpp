@@ -143,3 +143,25 @@ void Camera::Render(const HittableObjects& scene) {
     std::cerr << "Done. Wrote image.ppm (" << mImageWidth << "x" << mImageHeight << ").\n";
 
 }
+
+void Camera::SetAspectRatio(float aspectRatio) {
+    mAspectRatio = aspectRatio;
+}
+
+void Camera::SetImageWidth(int imageWidth) {
+    mImageWidth = imageWidth;
+    mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
+}
+
+void Camera::SetSamplesPerPixel(int samplesPerPixel) {
+    mSamplesPerPixel = samplesPerPixel;
+    mSampleRates = 1.0 / mSamplesPerPixel;
+}
+
+void Camera::SetMaxDepth(int maxDepth) {
+    mMaxDepth = maxDepth;
+}
+
+void Camera::SetFOV(double fov) {
+    mFOV = fov;
+}

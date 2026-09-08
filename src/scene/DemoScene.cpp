@@ -16,6 +16,8 @@
 void DemoScene::RenderScene(int sceneIndex) {
     if (sceneIndex == 0) {
         BoundingSphereScene();
+    } else if (sceneIndex == 1) {
+        CheckeredSpheresScene();
     }
 }
 
@@ -84,4 +86,27 @@ void DemoScene::BoundingSphereScene() {
     camera.Render(scene);
 }
 
+void DemoScene::CheckeredSpheresScene() {
+    HittableObjects scene;
+
+    auto checker = std::make_shared<CheckerTexture>(0.32, Color(.2, .3, .1), Color(.9, .9, .9));
+
+    scene.AddObject(std::make_shared<SphereShape>(Point3(0,-10, 0), 10, std::make_shared<Lambertian>(checker)));
+    scene.AddObject(std::make_shared<SphereShape>(Point3(0, 10, 0), 10, std::make_shared<Lambertian>(checker)));
+    Camera cam;
+
+    cam.SetAspectRatio(16.0 / 9.0);
+    cam.SetImageWidth(400);
+    cam.SetSamplesPerPixel(100);
+    cam.SetMaxDepth(50);
+
+    cam.SetFOV(20);
+    cam.mLookFrom = Point3(13,2,3);
+    cam.mLookAt   = Point3(0,0,0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(scene);
+}
 
