@@ -52,7 +52,16 @@ public:
         hit_record.m_material = m_material;
         Vec3 outNormal = (hit_record.point - currentCenter) / m_radius;
         hit_record.SetFaceNormal(ray, outNormal);
+        GetSphereUVCoordinates(outNormal, hit_record.u, hit_record.v); // Get UV coordinates
         return true;
+    }
+
+    static void GetSphereUVCoordinates(const Point3& p, double& u, double& v) {
+        auto theta = std::acos(-p.y());
+        auto phi = std::atan2(-p.z(), p.x()) + G_PI;
+
+        u = phi / (2.0 * G_PI);
+        v = theta / G_PI;
     }
 
 private:

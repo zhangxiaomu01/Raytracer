@@ -10,6 +10,7 @@
 #include "DielectricMat.h"
 #include "MetalMat.h"
 #include "CheckerTexture.h"
+#include "ImageTexture.h"
 #include "SolidColor.h"
 #include "Camera.h"
 
@@ -18,6 +19,8 @@ void DemoScene::RenderScene(int sceneIndex) {
         BoundingSphereScene();
     } else if (sceneIndex == 1) {
         CheckeredSpheresScene();
+    } else if (sceneIndex == 2) {
+        EarthScene();
     }
 }
 
@@ -110,3 +113,24 @@ void DemoScene::CheckeredSpheresScene() {
     cam.Render(scene);
 }
 
+void DemoScene::EarthScene() {
+    auto earthTexture = std::make_shared<ImageTexture>("earthmap.jpg");
+    auto earthMaterial = std::make_shared<Lambertian>(earthTexture);
+    auto globe = std::make_shared<SphereShape>(Point3(0,0,0), 2, earthMaterial);
+
+    Camera cam;
+
+    cam.SetAspectRatio(16.0 / 9.0);
+    cam.SetImageWidth(400);
+    cam.SetSamplesPerPixel(100);
+    cam.SetMaxDepth(50);
+
+    cam.SetFOV(20);
+    cam.mLookFrom = Point3(0,0,12);
+    cam.mLookAt   = Point3(0,0,0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(HittableObjects(globe));
+}

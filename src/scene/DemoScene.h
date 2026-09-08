@@ -11,6 +11,8 @@ private:
     static void BoundingSphereScene();
 
     static void CheckeredSpheresScene();
+
+    static void EarthScene();
     
 };
 #endif

@@ -1,8 +1,7 @@
 #include "DemoScene.h"
 
 int main() {
-    DemoScene::RenderScene(1);
+    DemoScene::RenderScene(2);
 
     return 0;
 }
-
