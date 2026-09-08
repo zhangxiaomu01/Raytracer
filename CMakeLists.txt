@@ -35,6 +35,7 @@ include_directories(${CMAKE_SOURCE_DIR}/src/utility)
 include_directories(${CMAKE_SOURCE_DIR}/src/materials)
 include_directories(${CMAKE_SOURCE_DIR}/src/texture)
 include_directories(${CMAKE_SOURCE_DIR}/src/scene)
+include_directories(${CMAKE_SOURCE_DIR}/src/thirdParty)
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/src/camera/*.cpp"
@@ -45,6 +46,7 @@ file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS
     "${CMAKE_SOURCE_DIR}/src/utility/*.cpp"
     "${CMAKE_SOURCE_DIR}/src/texture/*.cpp"
     "${CMAKE_SOURCE_DIR}/src/scene/*.cpp"
+    "${CMAKE_SOURCE_DIR}/src/thirdParty/*.cpp"
 )
 
 add_executable(${PROJECT_NAME} ${SOURCES})
