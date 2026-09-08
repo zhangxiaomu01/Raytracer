@@ -12,6 +12,10 @@ struct HitRecord {
     Point3 point;
     Vec3 normal;
     double t;
+    // u, v coordinates for texture mapping.
+    double u;
+    double v;
+
     bool m_frontFace;
     std::shared_ptr<Material> m_material;
 

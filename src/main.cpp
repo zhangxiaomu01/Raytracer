@@ -7,14 +7,21 @@
 #include "LambertMat.h"
 #include "DielectricMat.h"
 #include "MetalMat.h"
+#include "CheckerTexture.h"
+#include "SolidColor.h"
 #include "Camera.h"
 
 int main() {
     HittableObjects scene;
 
     // Camera
-    auto ground_material = std::make_shared<Lambertian>(Color(0.5, 0.5, 0.5));
-    scene.AddObject(std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, ground_material));
+    auto checkerTexture = std::make_shared<CheckerTexture>(
+        0.32,
+        Color(0.2, 0.3, 0.1),
+        Color(0.9, 0.9, 0.9));
+    scene.AddObject(
+        std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, 
+        std::make_shared<Lambertian>(checkerTexture)));
 
     for (int a = -11; a < 11; a++) {
         for (int b = -11; b < 11; b++) {
