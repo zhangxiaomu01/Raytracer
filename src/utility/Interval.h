@@ -46,8 +46,7 @@ public:
         return Interval(m_min - delta, m_max + delta);
     }
 
-    static const Interval empty, universe;
-
+    static const Interval EMPTY, UNIVERSAL;
 };
 
 #endif

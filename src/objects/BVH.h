@@ -10,13 +10,18 @@ public:
     BVHNode(std::vector<std::shared_ptr<Hittable>>& objects, size_t start, size_t end) {
         size_t objectSpan = end - start;
 
+        m_boundingBox = AABB::EMPTY_AABB;
+        for (size_t i = start; i < end; i++) {
+            m_boundingBox = AABB(m_boundingBox, objects[i]->BoundingBox());
+        }
+        int axis = m_boundingBox.LongestAxis();
+
         if (objectSpan == 1) {
             m_left = m_right = objects[start];
         } else if (objectSpan == 2) {
             m_left = objects[start];
             m_right = objects[start + 1];
         } else {
-            int axis = RandomInt(0,2);
             auto comparator = (axis == 0) ? boxXCompare
                             : (axis == 1) ? boxYCompare
                                         : boxZCompare;
@@ -27,9 +32,6 @@ public:
             m_right = std::make_shared<BVHNode>(objects, mid, end);
             
         }
-
-        m_boundingBox = AABB(m_left->BoundingBox(), m_right->BoundingBox());
-
     }
     ~BVHNode() = default;
 
