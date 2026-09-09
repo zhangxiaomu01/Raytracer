@@ -11,6 +11,7 @@
 #include "MetalMat.h"
 #include "CheckerTexture.h"
 #include "ImageTexture.h"
+#include "NoiseTexture.h"
 #include "SolidColor.h"
 #include "Camera.h"
 
@@ -21,6 +22,8 @@ void DemoScene::RenderScene(int sceneIndex) {
         CheckeredSpheresScene();
     } else if (sceneIndex == 2) {
         EarthScene();
+    } else if (sceneIndex == 3) {
+        PerlinSpheres();
     }
 }
 
@@ -133,4 +136,28 @@ void DemoScene::EarthScene() {
     cam.mDefocusAngle = 0;
 
     cam.Render(HittableObjects(globe));
+}
+
+void DemoScene::PerlinSpheres() {
+    HittableObjects world;
+
+    auto pertext = std::make_shared<NoiseTexture>();
+    world.AddObject(std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, make_shared<Lambertian>(pertext)));
+    world.AddObject(std::make_shared<SphereShape>(Point3(0,2,0), 2, make_shared<Lambertian>(pertext)));
+
+    Camera cam;
+
+    cam.SetAspectRatio(16.0 / 9.0);
+    cam.SetImageWidth(400);
+    cam.SetSamplesPerPixel(100);
+    cam.SetMaxDepth(50);
+
+    cam.SetFOV(20);
+    cam.mLookFrom = Point3(13,2,3);
+    cam.mLookAt   = Point3(0,0,0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(world);
 }

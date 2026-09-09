@@ -13,6 +13,8 @@ private:
     static void CheckeredSpheresScene();
 
     static void EarthScene();
+
+    static void PerlinSpheres();
     
 };
 #endif
