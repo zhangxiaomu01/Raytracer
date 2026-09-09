@@ -141,7 +141,7 @@ void DemoScene::EarthScene() {
 void DemoScene::PerlinSpheres() {
     HittableObjects world;
 
-    auto pertext = std::make_shared<NoiseTexture>();
+    auto pertext = std::make_shared<NoiseTexture>(4.0);
     world.AddObject(std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, make_shared<Lambertian>(pertext)));
     world.AddObject(std::make_shared<SphereShape>(Point3(0,2,0), 2, make_shared<Lambertian>(pertext)));
 
