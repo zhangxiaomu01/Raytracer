@@ -146,6 +146,7 @@ void Camera::Render(const HittableObjects& scene) {
 
 void Camera::SetAspectRatio(float aspectRatio) {
     mAspectRatio = aspectRatio;
+    mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
 }
 
 void Camera::SetImageWidth(int imageWidth) {

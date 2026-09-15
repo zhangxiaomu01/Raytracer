@@ -15,6 +15,8 @@ private:
     static void EarthScene();
 
     static void PerlinSpheres();
+
+    static void QuadShapeScene();
     
 };
 #endif
