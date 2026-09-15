@@ -64,3 +64,17 @@ int AABB::LongestAxis() const {
     }
     return 2;
 }
+
+void AABB::PadMinimums() {
+
+    double delta = 1e-6;
+    if (m_x.Size() < delta) {
+        m_x = m_x.Expand(delta);
+    }
+    if (m_y.Size() < delta) {
+        m_y = m_y.Expand(delta);
+    }
+    if (m_z.Size() < delta) {
+        m_z = m_z.Expand(delta);
+    }
+}
