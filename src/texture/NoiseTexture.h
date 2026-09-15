@@ -12,8 +12,7 @@ public:
     NoiseTexture(double scale) : m_scale(scale) {}
     ~NoiseTexture() = default;
     Color value(double u, double v, const Point3& p) const override {
-        // Normalize to [0, 1]
-        return Color(1, 1, 1) * 0.5 * (1.0 + perlin.Noise(p * m_scale));
+        return Color(0.5, 0.5, 0.5) * (1.0 + std::sin(m_scale * p.z() + 10 * perlin.Turbulence(p, 7)));
     }
 
 private:

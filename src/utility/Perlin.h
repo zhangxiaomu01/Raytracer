@@ -40,6 +40,19 @@ public:
         return PerlinInterpolation(c, u, v, w);
     }
 
+    double Turbulence(const Point3& p, int depth) const {
+        double accum = 0.0;
+        auto tempP = p;
+        auto weight = 1.0;
+
+        for (int i = 0; i < depth; i++) {
+            accum += weight * Noise(tempP);
+            tempP *= 2.0;
+            weight *= 0.5;
+        }
+        return std::fabs(accum);
+    }
+
 private:
     static const int POINT_COUNT = 256;
     Vec3 randonVectors[POINT_COUNT];
