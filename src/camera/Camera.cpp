@@ -9,8 +9,6 @@ Camera::Camera() {
 
 void Camera::Initialize() {
     // Initialize the camera parameters
-    mAspectRatio = 16 / 9.0;
-    mImageWidth = 400;
     mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
     mImageHeight = mImageHeight < 1 ? 1 : mImageHeight;
     mCameraCenter = mLookFrom;
@@ -37,11 +35,6 @@ void Camera::Initialize() {
     mPixelDeltaV = viewportV / mImageHeight;
     mPixel00Loc = mViewportUpperLeft + 0.5 * (mPixelDeltaU + mPixelDeltaV);
 
-    // Initialize the samples
-    mSamplesPerPixel = 10;
-    mSampleRates = 1.0 / mSamplesPerPixel;
-    mMaxDepth = 20;
-
     // Defocus radius
     auto defocusRadius = mFocalDistance * std::tan(DgreeToRadians(mDefocusAngle / 2.0));
     mDefocusDiskU = defocusRadius * u;
@@ -55,22 +48,23 @@ Color Camera::RayColor(const Ray& r, const HittableObjects& scene, int depth) {
 
     // Get the color of the pixel
     HitRecord record;
-    // 0.00001 is the minimum distance to avoid shadow acne
-    if (scene.Hit(r, Interval(0.00001, G_INFINITY), record)) {
-        Color attentunation = Color(0,0,0);
-        Ray outRay;
 
-        if (record.m_material->Scatter(r, record, attentunation, outRay)) {
-            return attentunation * RayColor(outRay, scene, depth - 1);
-        }
-
-        return attentunation;
+    if (!scene.Hit(r, Interval(0.00001, G_INFINITY), record)) {
+        return mBackgroundColor;
     }
 
-    auto unit_direction = unit_vector(r.Direction());
-    auto a = 0.5 * (1.0 + unit_direction.y());
+    // 0.00001 is the minimum distance to avoid shadow acne
+    Color attentunation = Color(0,0,0);
+    Ray outRay;
+    Color colorEmissive = record.m_material->Emit(record.u, record.v, record.point);
 
-    return Color(0.5,0.7,1) * a + Color(1,1,1) * (1 - a);
+    if (!record.m_material->Scatter(r, record, attentunation, outRay)) {
+        return colorEmissive;
+    }
+
+    Color colorScatter = attentunation * RayColor(outRay, scene, depth - 1);
+
+    return colorScatter + colorEmissive;
 }
 
 Ray Camera::GetRay(int x, int y) {

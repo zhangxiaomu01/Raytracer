@@ -12,6 +12,7 @@ public:
     Point3 mLookFrom = Vec3(0,0,0);
     Point3 mLookAt = Vec3(0,0,-1);
     Vec3 mVUp = Vec3(0,1,0);
+    Color mBackgroundColor = Color(0.70, 0.80, 1.00);
 
     double mDefocusAngle = 0.0; // in degrees, 0 means no depth of field
     double mFocalDistance = 10.0;
@@ -31,8 +32,9 @@ public:
 
     void SetFOV(double fov);
 
-private:
     void Initialize();
+
+private:
 
     Color RayColor(const Ray& r, const HittableObjects& scene, int depth);
 
@@ -44,9 +46,9 @@ private:
 
     Vec3 SampleDefocusDisk() const;
 
-    float mAspectRatio;
-    int mImageWidth;
-    int mImageHeight;
+    float mAspectRatio = 16.0 / 9.0;
+    int mImageWidth = 400;
+    int mImageHeight = 225;
 
     // Camera parameters
     double mViewportHeight;
@@ -62,9 +64,9 @@ private:
     Vec3 mPixelDeltaV;
 
     // Samples
-    int mSamplesPerPixel;
-    double mSampleRates;
-    int mMaxDepth;
+    int mSamplesPerPixel = 10;
+    double mSampleRates = 0.1;
+    int mMaxDepth = 20;
 
 };
 
