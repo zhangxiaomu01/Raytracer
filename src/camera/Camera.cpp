@@ -12,8 +12,6 @@ void Camera::Initialize() {
     mImageHeight = static_cast<int>(mImageWidth / mAspectRatio);
     mImageHeight = mImageHeight < 1 ? 1 : mImageHeight;
     mCameraCenter = mLookFrom;
-    mLookAt = Point3(0,0,-1);
-    mVUp = Vec3(0,1,0);
     w = unit_vector(mLookFrom - mLookAt); // w points to the negative direction of camera view
     u = unit_vector(cross(mVUp, w));
     v = cross(w, u);

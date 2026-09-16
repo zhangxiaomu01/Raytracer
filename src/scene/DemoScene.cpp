@@ -210,10 +210,10 @@ void DemoScene::SampleLight() {
     world.AddObject(std::make_shared<SphereShape>(Point3(0,2,0), 2, make_shared<Lambertian>(pertext)));
 
     auto difflight = std::make_shared<DiffuseLightMat>(Color(4,4,4));
+    world.AddObject(std::make_shared<SphereShape>(Point3(0,7,0), 2, difflight));
     world.AddObject(std::make_shared<QuadShape>(Point3(3,1,-2), Vec3(2,0,0), Vec3(0,2,0), difflight));
 
     Camera cam;
-    cam.Initialize();
 
     cam.SetAspectRatio(16.0 / 9.0);
     cam.SetImageWidth(400);
