@@ -9,6 +9,7 @@
 #include "LambertMat.h"
 #include "DielectricMat.h"
 #include "MetalMat.h"
+#include "DiffuseLightMat.h"
 #include "QuadShape.h"
 #include "CheckerTexture.h"
 #include "ImageTexture.h"
@@ -27,6 +28,8 @@ void DemoScene::RenderScene(int sceneIndex) {
         PerlinSpheres();
     } else if (sceneIndex == 4) {
         QuadShapeScene();
+    } else if (sceneIndex == 5) {
+        SampleLight();
     }
 }
 
@@ -198,3 +201,34 @@ void DemoScene::QuadShapeScene() {
 
     cam.Render(world);
 }
+
+void DemoScene::SampleLight() {
+    HittableObjects world;
+
+    auto pertext = std::make_shared<NoiseTexture>(4);
+    world.AddObject(std::make_shared<SphereShape>(Point3(0,-1000,0), 1000, make_shared<Lambertian>(pertext)));
+    world.AddObject(std::make_shared<SphereShape>(Point3(0,2,0), 2, make_shared<Lambertian>(pertext)));
+
+    auto difflight = std::make_shared<DiffuseLightMat>(Color(4,4,4));
+    world.AddObject(std::make_shared<QuadShape>(Point3(3,1,-2), Vec3(2,0,0), Vec3(0,2,0), difflight));
+
+    Camera cam;
+    cam.Initialize();
+
+    cam.SetAspectRatio(16.0 / 9.0);
+    cam.SetImageWidth(400);
+    cam.SetSamplesPerPixel(100);
+    cam.SetMaxDepth(50);
+
+    cam.SetFOV(20);
+
+    cam.mBackgroundColor = Color(0,0,0);
+    cam.mLookFrom = Point3(26,3,6);
+    cam.mLookAt   = Point3(0,2,0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(world);
+}
+
