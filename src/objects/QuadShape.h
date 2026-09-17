@@ -2,6 +2,7 @@
 #define QUADSHAPE_H
 
 #include "Hittable.h"
+#include "HittableObjects.h"
 
 class QuadShape : public Hittable {
 public:
@@ -79,5 +80,29 @@ private:
     Vec3 m_normal;
     double m_distance;
 };
+
+inline std::shared_ptr<HittableObjects> CreateBox(
+    const Point3& a, const Point3& b, std::shared_ptr<Material> material) {
+    // Return 3D box with point a and point b included.
+
+    auto box = std::make_shared<HittableObjects>();
+
+    auto minPt = Point3(std::min(a.x(), b.x()), std::min(a.y(), b.y()), std::min(a.z(), b.z()));
+    auto maxPt = Point3(std::max(a.x(), b.x()), std::max(a.y(), b.y()), std::max(a.z(), b.z()));
+
+    auto dx = Vec3(maxPt.x() - minPt.x(), 0, 0);
+    auto dy = Vec3(0, maxPt.y() - minPt.y(), 0);
+    auto dz = Vec3(0, 0, maxPt.z() - minPt.z());
+
+    box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), minPt.y(), maxPt.z()), dx, dy, material)); // front
+    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), maxPt.z()), -dz, dy, material)); // back
+    box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), maxPt.y(), maxPt.z()), dx, -dz, material)); // top
+    box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), minPt.y(), minPt.z()), dz, dy, material)); // left
+    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), maxPt.z()), -dz, dy, material)); // right
+    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), minPt.z()), dx, dz, material)); // bottom
+    
+    return box;
+}
+
 
 #endif

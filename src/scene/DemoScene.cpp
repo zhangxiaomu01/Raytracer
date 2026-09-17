@@ -249,10 +249,14 @@ void DemoScene::CornellBox() {
     world.AddObject(std::make_shared<QuadShape>(Point3(555,555,555), Vec3(-555,0,0), Vec3(0,0,-555), white));
     world.AddObject(std::make_shared<QuadShape>(Point3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
+    // Adds two boxes
+    world.AddObject(CreateBox(Point3(130, 0, 65), Point3(295, 165, 230), white));
+    world.AddObject(CreateBox(Point3(265, 0, 295), Point3(430, 330, 460), white));
+
     Camera cam;
 
     cam.SetAspectRatio(1.0);
-    cam.SetImageWidth(600);
+    cam.SetImageWidth(400);
     cam.SetSamplesPerPixel(200);
     cam.SetMaxDepth(50);
 
