@@ -49,4 +49,16 @@ public:
     static const Interval EMPTY, UNIVERSAL;
 };
 
+inline Interval operator+(const Interval& a, const Interval& b) {
+    return Interval(a.m_min, b.m_max);
+}
+
+inline Interval operator+(const Interval& a, double offset) {
+    return Interval(a.m_min + offset, a.m_max + offset);
+}
+
+inline Interval operator+(double offset, const Interval& a) {
+    return a + offset;
+}
+
 #endif

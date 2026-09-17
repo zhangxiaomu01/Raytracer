@@ -40,4 +40,12 @@ private:
     void PadMinimums();
 };
 
+inline AABB operator+(const AABB& bbox, const Vec3& offset) {
+    return AABB(bbox.m_x + offset.x(), bbox.m_y + offset.y(), bbox.m_z + offset.z());
+}
+
+inline AABB operator+(const Vec3& offset, const AABB& bbox) {
+    return bbox + offset;
+}
+
 #endif

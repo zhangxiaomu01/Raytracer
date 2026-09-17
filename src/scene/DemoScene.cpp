@@ -250,8 +250,15 @@ void DemoScene::CornellBox() {
     world.AddObject(std::make_shared<QuadShape>(Point3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
     // Adds two boxes
-    world.AddObject(CreateBox(Point3(130, 0, 65), Point3(295, 165, 230), white));
-    world.AddObject(CreateBox(Point3(265, 0, 295), Point3(430, 330, 460), white));
+    std::shared_ptr<Hittable> box1 = CreateBox(Point3(0,0,0), Point3(165,330,165), white);
+    box1 = std::make_shared<RotateY>(box1, 15.0);
+    box1 = std::make_shared<Translate>(box1, Vec3(265,0,295));
+    world.AddObject(box1);
+
+    std::shared_ptr<Hittable> box2 = CreateBox(Point3(0,0,0), Point3(165,165,165), white);
+    box2 = std::make_shared<RotateY>(box2, -18.0);
+    box2 = std::make_shared<Translate>(box2, Vec3(130,0,65));
+    world.AddObject(box2);
 
     Camera cam;
 
