@@ -19,6 +19,7 @@ private:
     static void QuadShapeScene();
 
     static void SampleLight();
-    
+
+    static void CornellBox();
 };
 #endif

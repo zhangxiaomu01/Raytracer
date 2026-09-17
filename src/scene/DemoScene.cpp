@@ -30,6 +30,8 @@ void DemoScene::RenderScene(int sceneIndex) {
         QuadShapeScene();
     } else if (sceneIndex == 5) {
         SampleLight();
+    } else if (sceneIndex == 6) {
+        CornellBox();
     }
 }
 
@@ -225,6 +227,40 @@ void DemoScene::SampleLight() {
     cam.mBackgroundColor = Color(0,0,0);
     cam.mLookFrom = Point3(26,3,6);
     cam.mLookAt   = Point3(0,2,0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(world);
+}
+
+void DemoScene::CornellBox() {
+    HittableObjects world;
+
+    auto red   = std::make_shared<Lambertian>(Color(.65, .05, .05));
+    auto white = std::make_shared<Lambertian>(Color(.73, .73, .73));
+    auto green = std::make_shared<Lambertian>(Color(.12, .45, .15));
+    auto light = std::make_shared<DiffuseLightMat>(Color(15, 15, 15));
+
+    world.AddObject(std::make_shared<QuadShape>(Point3(555,0,0), Vec3(0,555,0), Vec3(0,0,555), green));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(0,555,0), Vec3(0,0,555), red));
+    world.AddObject(std::make_shared<QuadShape>(Point3(343, 554, 332), Vec3(-130,0,0), Vec3(0,0,-105), light));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(555,0,0), Vec3(0,0,555), white));
+    world.AddObject(std::make_shared<QuadShape>(Point3(555,555,555), Vec3(-555,0,0), Vec3(0,555,0), white));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
+
+    Camera cam;
+
+    cam.SetAspectRatio(1.0);
+    cam.SetImageWidth(600);
+    cam.SetSamplesPerPixel(200);
+    cam.SetMaxDepth(50);
+
+    cam.mBackgroundColor = Color(0,0,0);
+
+    cam.mFOV     = 40;
+    cam.mLookFrom = Point3(278, 278, -800);
+    cam.mLookAt   = Point3(278, 278, 0);
     cam.mVUp      = Vec3(0,1,0);
 
     cam.mDefocusAngle = 0;
