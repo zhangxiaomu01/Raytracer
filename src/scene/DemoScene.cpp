@@ -246,7 +246,7 @@ void DemoScene::CornellBox() {
     world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(0,555,0), Vec3(0,0,555), red));
     world.AddObject(std::make_shared<QuadShape>(Point3(343, 554, 332), Vec3(-130,0,0), Vec3(0,0,-105), light));
     world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(555,0,0), Vec3(0,0,555), white));
-    world.AddObject(std::make_shared<QuadShape>(Point3(555,555,555), Vec3(-555,0,0), Vec3(0,555,0), white));
+    world.AddObject(std::make_shared<QuadShape>(Point3(555,555,555), Vec3(-555,0,0), Vec3(0,0,-555), white));
     world.AddObject(std::make_shared<QuadShape>(Point3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
 
     Camera cam;
