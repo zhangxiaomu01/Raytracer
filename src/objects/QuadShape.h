@@ -95,11 +95,11 @@ inline std::shared_ptr<HittableObjects> CreateBox(
     auto dz = Vec3(0, 0, maxPt.z() - minPt.z());
 
     box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), minPt.y(), maxPt.z()), dx, dy, material)); // front
-    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), maxPt.z()), -dz, dy, material)); // back
+    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), minPt.z()), -dx, dy, material)); // back
     box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), maxPt.y(), maxPt.z()), dx, -dz, material)); // top
     box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), minPt.y(), minPt.z()), dz, dy, material)); // left
     box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), maxPt.z()), -dz, dy, material)); // right
-    box->AddObject(std::make_shared<QuadShape>(Point3(maxPt.x(), minPt.y(), minPt.z()), dx, dz, material)); // bottom
+    box->AddObject(std::make_shared<QuadShape>(Point3(minPt.x(), minPt.y(), minPt.z()), dx, dz, material)); // bottom
     
     return box;
 }

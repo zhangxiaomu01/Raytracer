@@ -9,6 +9,7 @@
 #include "LambertMat.h"
 #include "DielectricMat.h"
 #include "MetalMat.h"
+#include "ConstantMedia.h"
 #include "DiffuseLightMat.h"
 #include "QuadShape.h"
 #include "CheckerTexture.h"
@@ -32,6 +33,8 @@ void DemoScene::RenderScene(int sceneIndex) {
         SampleLight();
     } else if (sceneIndex == 6) {
         CornellBox();
+    } else if (sceneIndex == 7) {
+        CornellSmoke();
     }
 }
 
@@ -264,6 +267,52 @@ void DemoScene::CornellBox() {
 
     cam.SetAspectRatio(1.0);
     cam.SetImageWidth(400);
+    cam.SetSamplesPerPixel(200);
+    cam.SetMaxDepth(50);
+
+    cam.mBackgroundColor = Color(0,0,0);
+
+    cam.mFOV     = 40;
+    cam.mLookFrom = Point3(278, 278, -800);
+    cam.mLookAt   = Point3(278, 278, 0);
+    cam.mVUp      = Vec3(0,1,0);
+
+    cam.mDefocusAngle = 0;
+
+    cam.Render(world);
+}
+
+
+void DemoScene::CornellSmoke() {
+    HittableObjects world;
+
+    auto red   = std::make_shared<Lambertian>(Color(.65, .05, .05));
+    auto white = std::make_shared<Lambertian>(Color(.73, .73, .73));
+    auto green = std::make_shared<Lambertian>(Color(.12, .45, .15));
+    auto light = std::make_shared<DiffuseLightMat>(Color(7, 7, 7));
+
+    world.AddObject(std::make_shared<QuadShape>(Point3(555,0,0), Vec3(0,555,0), Vec3(0,0,555), green));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(0,555,0), Vec3(0,0,555), red));
+    world.AddObject(std::make_shared<QuadShape>(Point3(113,554,127), Vec3(330,0,0), Vec3(0,0,305), light));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,555,0), Vec3(555,0,0), Vec3(0,0,555), white));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,0), Vec3(555,0,0), Vec3(0,0,555), white));
+    world.AddObject(std::make_shared<QuadShape>(Point3(0,0,555), Vec3(555,0,0), Vec3(0,555,0), white));
+
+    std::shared_ptr<Hittable> box1 = CreateBox(Point3(0,0,0), Point3(165,330,165), white);
+    box1 = std::make_shared<RotateY>(box1, 15.0);
+    box1 = std::make_shared<Translate>(box1, Vec3(265,0,295));
+
+    std::shared_ptr<Hittable> box2 = CreateBox(Point3(0,0,0), Point3(165,165,165), white);
+    box2 = std::make_shared<RotateY>(box2, -18.0);
+    box2 = std::make_shared<Translate>(box2, Vec3(130,0,65));
+
+    world.AddObject(std::make_shared<ConstantMedia>(box1, 0.01, Color(0,0,0)));
+    world.AddObject(std::make_shared<ConstantMedia>(box2, 0.01, Color(1,1,1)));
+
+    Camera cam;
+
+    cam.SetAspectRatio(1.0);
+    cam.SetImageWidth(600);
     cam.SetSamplesPerPixel(200);
     cam.SetMaxDepth(50);
 

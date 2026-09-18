@@ -21,5 +21,7 @@ private:
     static void SampleLight();
 
     static void CornellBox();
+
+    static void CornellSmoke();
 };
 #endif
