@@ -92,7 +92,7 @@ Ray Camera::GetOutRay(const Vec3& point, const Vec3& normal) {
 
 Vec3 Camera::SampleSquare() const {
     // Sample a point in the square
-    return Vec3(RandomDouble() - 0.5, RandomDouble() * 0.5 - 0.5, 0);
+    return Vec3(RandomDouble() - 0.5, RandomDouble() - 0.5, 0);
 }
 
 Vec3 Camera::SampleDefocusDisk() const {
