@@ -2,7 +2,7 @@
 
 int main() {
     // Render scene
-    DemoScene::RenderScene(7);
+    DemoScene::RenderScene(8);
 
     return 0;
 }

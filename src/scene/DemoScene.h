@@ -23,5 +23,7 @@ private:
     static void CornellBox();
 
     static void CornellSmoke();
+
+    static void ShowCaseScene01(int imageWidth, int samplesPerPixel, int maxDDepth);
 };
 #endif
